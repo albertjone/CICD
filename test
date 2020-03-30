@@ -1,0 +1,86 @@
+#!/bin/bash
+
+# Call getopt to validate the provided input.
+options=$(getopt -o brg --long color: -- "$@")
+[ $? -eq 0 ] || {
+    echo "Incorrect options provided"
+    exit 1
+}
+eval set -- "$options"
+while true; do
+    case "$1" in
+    -b)
+        COLOR=BLUE
+        ;;
+    -r)
+        COLOR=RED
+        ;;
+    -g)
+        COLOR=GREEN
+        ;;
+    --color)
+        shift; # The arg is next in position args
+        COLOR=$1
+        [[ ! $COLOR =~ BLUE|RED|GREEN ]] && {
+            echo "Incorrect options provided"
+            exit 1
+        }
+        ;;
+    --)
+        shift
+        break
+        ;;
+    esac
+    shift
+done
+
+echo "Color is $COLOR"
+exit 0;
+
+
+
+# for python in python3, python2; do
+#     if $python -c 'import os; print(os.__file__)' &> /dev/null; then
+#         echo $($python -V)
+#     fi
+#     if $python -c 'import os; print(os.__file__)' >& /dev/null; then
+#         echo $($python -V)
+#     fi
+# done
+
+
+# items=
+# for i in "$@"
+# do
+#     items="$items \"$i\""
+# done
+
+# echo $items
+
+# for i in $items
+# do
+#     echo $i
+# done
+
+# items=
+# for i in "$@"
+# do
+#     items="$items \"$i\""
+# done
+
+# set -x
+# set -- $items
+# set +x
+# echo '===='
+# set -x
+# eval set -- $items
+# set +x
+
+
+SHORT_OPTS="hi:p:t:k:e:v"
+LONG_OPTS="help,inventory:,playbook:,skip-tags:,tags:,key:,extra:,verbose,configdir:,passwords:,limit:,forks:,vault-id:,ask-vault-pass,vault-password-file:,yes-i-really-really-mean-it,include-images,include-dev:,full,incremental"
+
+ARGS=$(getopt -o "${SHORT_OPTS}" -l "${LONG_OPTS}" --name "$0" -- "$@") || { usage >&2; exit 2; }
+echo "$ARGS"
+eval set -- "$ARGS"
+echo "$ARGS"

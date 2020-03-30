@@ -1,0 +1,32 @@
+---
+- import_playbook: gather-facts.yml
+
+# NOTE(mgoddard): In large environments, even tasks that are skipped can take a
+# significant amount of time. This is an optimisation to prevent any tasks
+# running in the subsequent plays for services that are disabled.
+- name: Group hosts based on configuration
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Group hosts based on Kolla action
+      group_by:
+        key: "kolla_action_{{ kolla_action }}"
+
+    - name: Group hosts based on enabled services
+      group_by:
+        key: "{{ item }}"
+      with_items:
+        - enable_nginx_{{ enable_nginx | bool }}
+        - enable_redis_{{ enable_redis | bool }}
+        - enable_mysql_{{ enable_mysql | bool }}
+        - enable_jenkins_{{ enable_jenkins | bool }}
+        - enable_gerrit_{{ enable_gerrit | bool }}
+  tags: always
+
+
+- name: Apply role prechecks
+  gather_facts: false
+  # Apply only when cicd action is 'precheck'.
+  hosts: cicd_action_precheck
+  roles:
+    - role: prechecks

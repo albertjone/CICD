@@ -1,0 +1,83 @@
+---
+# The options in this file can be overridden in 'globals.yml'
+
+# The "temp" files that are created before merge need to stay persistent due
+# to the fact that ansible will register a "change" if it has to create them
+# again. Persistent files allow for idempotency
+container_config_directory: "/var/lib/cicd/config_files"
+
+# The directory on the deploy host containing globals.yml.
+node_config: "{{ CONFIG_DIR | default('/etc/cicd') }}"
+
+# The directory to merge custom config files the cicd's config files
+node_custom_config: "/etc/cicd/config"
+
+# The directory to store the config files on the destination node
+node_config_directory: "/etc/cicd"
+
+# The group which own node_config_directory, you can use a non-root
+# user to deploy cicd
+config_owner_user: "root"
+config_owner_group: "root"
+
+
+# Valid options are [ COPY_ONCE, COPY_ALWAYS ]
+config_strategy: "COPY_ALWAYS"
+
+# Valid options are ['centos', 'debian', 'rhel', 'ubuntu']
+cicd_base_distro: "centos"
+# Valid options are [ binary, source ]
+cicd_install_type: "binary"
+
+
+####################
+# Database options
+####################
+database_address: "{{ cicd_internal_fqdn }}"
+database_user: "root"
+database_port: "3306"
+
+
+####################
+# Docker options
+####################
+docker_registry_email:
+docker_registry:
+docker_namespace: "cicd"
+docker_registry_username:
+docker_registry_insecure: "{{ 'yes' if docker_registry else 'no' }}"
+docker_runtime_directory: ""
+# Docker client timeout in seconds.
+docker_client_timeout: 120
+
+# Retention settings for Docker logs
+docker_log_max_file: "5"
+docker_log_max_size: "50m"
+
+# Valid options are [ no, on-failure, always, unless-stopped ]
+docker_restart_policy: "unless-stopped"
+
+# '0' means unlimited retries (applies only to 'on-failure' policy)
+docker_restart_policy_retry: "10"
+
+# Extra docker options for Zun
+docker_configure_for_zun: "no"
+docker_zun_options: -H tcp://{{ api_interface_address | put_address_in_context('url') }}:2375
+docker_zun_config:
+  cluster-store: etcd://{% for host in groups.get('etcd', []) %}{{ 'api' | cicd_address(host) | put_address_in_context('url') }}:{{ hostvars[host]['etcd_client_port'] }}{% if not loop.last %},{% endif %}{% endfor %}
+
+# Timeout after Docker sends SIGTERM before sending SIGKILL.
+docker_graceful_timeout: 60
+
+# Common options used throughout Docker
+docker_common_options:
+  auth_email: "{{ docker_registry_email }}"
+  auth_password: "{{ docker_registry_password }}"
+  auth_registry: "{{ docker_registry }}"
+  auth_username: "{{ docker_registry_username }}"
+  environment:
+    CICD_CONFIG_STRATEGY: "{{ config_strategy }}"
+  restart_policy: "{{ docker_restart_policy }}"
+  restart_retries: "{{ docker_restart_policy_retry }}"
+  graceful_timeout: "{{ docker_graceful_timeout }}"
+  client_timeout: "{{ docker_client_timeout }}"
