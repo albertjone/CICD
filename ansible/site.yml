@@ -8,9 +8,9 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: Group hosts based on Kolla action
+    - name: Group hosts based on Cicd action
       group_by:
-        key: "kolla_action_{{ kolla_action }}"
+        key: "cicd_action_{{ cicd_action }}"
 
     - name: Group hosts based on enabled services
       group_by:

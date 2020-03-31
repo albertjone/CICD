@@ -1,0 +1,36 @@
+[nodes]
+node1 ansible_host=192.168.115.131
+node2 ansible_host=192.168.115.132
+node3 ansible_host=192.168.115.133
+
+[nodes:vars]
+ansible_user=root
+ansible_password=root
+ansible_connection=paramiko
+
+[basic:children]
+nodes
+
+[business:children]
+nodes
+
+[loadbalance:children]
+nodes
+
+[redis:children]
+basic
+
+[mysql:children]
+basic
+
+[nginx:children]
+business
+
+[gerrit:children]
+business
+
+[jenkins:children]
+business
+
+[seafile:children]
+business

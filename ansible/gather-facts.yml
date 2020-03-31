@@ -6,7 +6,7 @@
 # Ansible gathering facts twice.
 - name: Gather facts for all hosts
   hosts: all
-  serial: '{{ kolla_serial|default("0") }}'
+  serial: '{{ cicd_serial|default("0") }}'
   gather_facts: false
   tasks:
     - name: Gather facts
@@ -25,7 +25,7 @@
 # the limit.
 - name: Gather facts for all hosts (if using --limit)
   hosts: all_using_limit_True
-  serial: '{{ kolla_serial|default("0") }}'
+  serial: '{{ cicd_serial|default("0") }}'
   gather_facts: false
   vars:
     batch_index: "{{ ansible_play_batch.index(inventory_hostname) }}"
