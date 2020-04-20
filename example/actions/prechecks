@@ -1,0 +1,3 @@
+cicd-ansible -i ~/code/Interest/CICD/example/etc/inventory/multinode_remote \
+--configdir ~/code/Interest/CICD/example/etc \
+--passwords ~/code/Interest/CICD/example/etc/passwords.yml
