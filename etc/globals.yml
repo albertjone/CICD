@@ -1,0 +1,47 @@
+---
+# You can use this file to override _any_ variable throughout Cicd.
+# Additional options can be found in the
+# 'cicd-ansible/ansible/group_vars/all.yml' file. Default value of all the
+# commented parameters are shown here, To override the default value uncomment
+# the parameter and change its value.
+
+###############
+# Cicd options
+###############
+# Valid options are [ COPY_ONCE, COPY_ALWAYS ]
+config_strategy: "COPY_ALWAYS"
+
+# Valid options are ['centos', 'debian', 'rhel', 'ubuntu']
+#cicd_base_distro: "centos"
+
+# Valid options are [ binary, source ]
+#cicd_install_type: "binary"
+
+# Valid option is Docker repository tag
+#cicd_release: ""
+
+# Docker image tag used by default.
+#cicd_tag: "{{ cicd_release ~ cicd_tag_suffix }}"
+
+# Suffix applied to cicd_release to generate cicd_tag.
+#cicd_tag_suffix: ""
+
+# Location of configuration overrides
+#node_custom_config: "/etc/cicd/config"
+
+
+################
+# Docker options
+################
+# Below is an example of a private repository with authentication. Note the
+# Docker registry password can also be set in the passwords.yml file.
+
+#docker_registry: "172.16.0.10:4000"
+#docker_namespace: "companyname"
+#docker_registry_insecure: "yes"
+#docker_registry_username: "sam"
+#docker_registry_password: "correcthorsebatterystaple"
+# Docker client timeout in seconds.
+#docker_client_timeout: 120
+
+#docker_configure_for_zun: "no"

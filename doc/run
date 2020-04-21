@@ -1,0 +1,11 @@
+cicd-ansible -i example/etc/inventory/multinode  --configdir  /Users/steveguan/code/Interest/CICD/etc prechecks -vvv
+
+ ansible-playbook -i example/etc/inventory/multinode \
+ -e @/Users/steveguan/code/Interest/CICD/etc/globals.yml \
+ -e @/etc/cicd/passwords.yml -e CONFIG_DIR=/Users/steveguan/code/Interest/CICD/etc \
+ -e cicd_action=precheck /usr/local/share/cicd-ansible/ansible/site.yml  --verbose --verbose --verbose
+
+ ansible-playbook -i example/etc/inventory/multinode \
+ -e @/Users/steveguan/code/Interest/CICD/etc/globals.yml \
+ -e @/etc/cicd/passwords.yml \
+/usr/local/share/cicd-ansible/ansible/site.yml  --verbose --verbose --verbose

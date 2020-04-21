@@ -164,7 +164,6 @@ PLAYBOOK="${BASEDIR}/ansible/site.yml"
 VERBOSITY=
 EXTRA_OPTS=${EXTRA_OPTS}
 CONFIG_DIR="/etc/cicd"
-PASSWORDS_FILE="${CONFIG_DIR}/passwords.yml"
 DANGER_CONFIRM=
 INCLUDE_IMAGES=
 INCLUDE_DEV=
@@ -418,6 +417,6 @@ EOF
         ;;
 esac
 
-CONFIG_OPTS="-e @${CONFIG_DIR}/globals.yml -e @${PASSWORDS_FILE} -e CONFIG_DIR=${CONFIG_DIR}"
+CONFIG_OPTS="-e @${CONFIG_DIR}/globals.yml -e @${CONFIG_DIR}/passwords.yml -e CONFIG_DIR=${CONFIG_DIR}"
 CMD="ansible-playbook -i $INVENTORY $CONFIG_OPTS $EXTRA_OPTS $PLAYBOOK $VERBOSITY"
 process_cmd
