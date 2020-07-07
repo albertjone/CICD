@@ -1,0 +1,6 @@
+wget https://www.python.org/ftp/python/3.5.7/Python-3.5.7.tgz
+tar zxvf Python-3.5.7.tgz
+cd Python-3.5.7/
+ls
+./configure --enable-shared --enable-optimizations
+make -j 4 altinstall
