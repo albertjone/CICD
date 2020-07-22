@@ -1,0 +1,10 @@
+--
+- import_playbooks: gather-facts.yml
+
+- name: App role baremetal
+  hosts: baremetal
+  serial: '100%'
+  gather_facts: false
+  roles:
+    - { role: baremetal,
+        tags: baremetal }

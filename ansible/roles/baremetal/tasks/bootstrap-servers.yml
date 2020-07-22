@@ -1,0 +1,6 @@
+---
+- include-tasks: pre-install.yml
+
+- include-tasks: install.yml
+
+- include-tasks: post-install.yml
