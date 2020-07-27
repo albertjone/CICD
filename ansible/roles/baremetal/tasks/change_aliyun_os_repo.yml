@@ -1,0 +1,11 @@
+- block:
+  - block:
+    - name: Ensure apt sources list directory exists
+      file:
+        path: /etc/apt/sources.list
+        state: file
+        rescue: yes
+      become: True
+    - name: Make a copy of sources.list
+      copy:
+        
